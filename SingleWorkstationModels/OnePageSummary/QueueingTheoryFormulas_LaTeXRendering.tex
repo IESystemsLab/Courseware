@@ -1,0 +1,143 @@
+ \documentclass[11pt]{article}
+\usepackage[left=1in, right=1in, top=1in, bottom=1in]{geometry}
+\usepackage{amsmath, amsfonts, amssymb}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{color}
+%%%%%
+\usepackage{xfrac}
+\usepackage{nicefrac}
+
+
+\begin{document}
+
+\noindent  \textbf{M/M/1}  ~~$[WIP, WIP_q, CT, CT_q, TH, U] = f(\mu_p, \mu_{ia})$
+\begin{align*}
+U 		&= \frac{\mu_p}{\mu_{ia}}	\qquad	\text{(any stable single workstation)}\\
+WIP 	&= \frac{U}{1-U}	\qquad	\text{(from Markovian assumptions)} \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad\\
+TH		&= \frac{1}{\mu_{ia}}	\qquad	\text{(any stable single workstation)}\\
+CT		&= \frac{WIP}{TH}	\qquad	\text{(Little's Law)}\\
+CT_q	&= CT - \mu_p 	\qquad	\text{(any single workstation)}\\
+WIP_q	&= TH * CT_q	\qquad	\text{(Little's Law)}
+\end{align*}
+
+\noindent  \textbf{M/M/k}  ~~$[~] \approx f(\mu_p, \mu_{ia}, k)$
+\begin{align*}
+U 		&= \frac{\mu_p}{k \mu_{ia}}		\qquad	\text{(any stable single workstation)} \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \quad\\
+CT_q	&\approx \frac{U^{\sqrt{2(k+1)}-1}}{k(1-U)} \mu_p 	\quad	\text{(Sakasegawa, 1977)}\\
+		&\hdots\\
+CT		&= CT_q + \mu_p 	\qquad	\text{(any single workstation)}\\
+TH		&= \frac{1}{\mu_{ia}}	\qquad	\text{(any stable single workstation)}\\
+WIP_q	&= TH * CT_q	\qquad	\text{(Little's Law)}\\
+WIP	&= TH * CT	\qquad	\text{(Little's Law)}
+\end{align*}
+
+\noindent  \textbf{G/G/1}  ~~$[~] \approx f(\mu_p, \sigma^2_p, \mu_{ia}, \sigma^2_{ia})$ with $c_{ia} = \frac{\sigma_{ia}}{\mu_{ia}}$ and $c_p = \frac{\sigma_p}{\mu_p}$
+\begin{align*}
+U 		&= \frac{\mu_p}{\mu_{ia}}	\qquad	\text{(any stable single workstation)}\\
+CT_q	&\approx \left( \frac{c_{ia}^2 + c_p^2}{2} \right)  \left( \frac{U}{1-U} \right)  \mu_p 	\quad	\text{(Kingman $\equiv$ VUT)} \qquad \qquad \qquad \qquad \qquad \qquad \qquad\\
+		&\text{Continue as with M/M/k \ldots}
+\end{align*}
+
+\noindent  \textbf{G/G/k}  ~~$[~] \approx f(\mu_p, \sigma^2_p, \mu_{ia}, \sigma^2_{ia}, k)$
+\begin{align*}
+U 		&= \frac{\mu_p}{k \mu_{ia}}		\qquad	\text{(any stable single workstation)}\\
+CT_q	&\approx \left( \frac{c_{ia}^2 + c_p^2}{2} \right)  \left( \frac{U^{\sqrt{2(k+1)}-1}}{k(1-U)} \right)  \mu_p 	\quad	\text{(VUT, Sakasegawa)} \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad\\
+		&\text{Continue as with M/M/k \ldots}
+\end{align*}
+
+%\noindent  \textbf{M/M/k} and \textbf{G/G/1}, \textbf{G/G/k}
+%\begin{align*}
+%CT		&= CT_q + \mu_p 	\qquad	\text{(any single workstation)}\\
+%TH		&= \frac{1}{\mu_{ia}}	\qquad	\text{(any stable single workstation)}\\
+%WIP_q	&= TH * CT_q	\qquad	\text{(Little's Law)}\\
+%WIP	&= TH * CT	\qquad	\text{(Little's Law)}
+%\end{align*}
+
+
+%%%%%
+\newpage
+
+\noindent  If \textbf{Preemptive Outages}\\
+\noindent  - Time between outages has average $M_{TTF}$, $CV \approx 1$\\
+\noindent  - Outages have mean and variance $(M_{TTR}, \sigma_{TTR}^2)$\\
+\noindent  Then correct $(\mu_p, \sigma^2_p)$ to effective $(\mu_e, \sigma^2_e)$:
+\begin{align*}
+A 				&= \frac{M_{TTF}}{M_{TTF} + M_{TTR}}\\
+\mu_e 			&= \frac{\mu_p}{A}\\
+\sigma^2_e 	&= \left(\frac{\sigma_p}{A}\right)^2 + \frac{\left(M_{TTR} + \sigma_{TTR}^2\right)(1-A)\mu_p}{A \cdot M_{TTR}} \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad
+\end{align*}
+
+\noindent  If \textbf{Nonpreemptive Outages}\\
+\noindent  - Number of jobs between outages has average $N$, $CV \approx 1$\\
+\noindent  - Outages have mean and variance $(\mu_s, \sigma_s^2)$\\
+\noindent  Then correct $(\mu_p, \sigma^2_p)$ to effective $(\mu_e, \sigma^2_e)$:
+\begin{align*}
+\mu_e 			&= \mu_p + \frac{\mu_s}{N}\\
+\sigma^2_e 	&= \sigma_p^2 + \frac{\sigma_s^2}{N} + \frac{N-1}{N^2} \mu_s^2 \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad
+\end{align*}
+
+\noindent  If both \textbf{Preemptive and Nonpreemptive Outages}\\
+\noindent  Then apply the formulas consecutively.
+
+
+%%%%%
+%\vspace{10mm}
+%\noindent  If a \textbf{Finite Buffer} for the single workstation's queue, \ldots
+
+
+%%%%%
+\newpage
+
+\noindent  If \textbf{Process Batching, Parallel Processing}\\
+\noindent  - G/G/1 queue with batch size $b$\\
+\noindent  - Whole-batch processing time $\mu_p$
+\begin{align*}
+U 		&= \frac{\mu_p}{b \mu_{ia}}		\qquad	\text{(any stable single workstation)}\\
+CT_q	&\approx \left( \frac{\frac{c_{ia}^2}{b} + c_p^2}{2} \right)  \left( \frac{U}{1-U} \right)  \mu_p 	\quad	\text{(Kingman)}\\
+CT		&= \frac{(b-1)\mu_{ia}}{2}\mu_p + CT_q + \mu_p 	\quad \text{(add wait-to-batch)} \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad\\
+		&\hdots\\
+TH		&= \frac{1}{\mu_{ia}}	\qquad	\text{(any stable single workstation)}\\
+WIP_q	&= TH * CT_q	\qquad	\text{(Little's Law)}\\
+WIP	&= TH * CT	\qquad	\text{(Little's Law)}
+\end{align*}
+
+\noindent  If \textbf{Process Batching, Serial Processing}\\
+\noindent  - G/G/1 queue with batch size $b$\\
+\noindent  - Per-element processing time $\mu_p$\\
+\noindent  - Setup time between batches $s$\\
+\noindent  - SCV for batch process \& setup time $c_e^2$\\
+\noindent  - Assume $c_e^2=0.5$ and $c_{ia}^2=1$:
+\begin{align*}
+U 		&= \frac{\mu_p + \nicefrac{s}{b}}{\mu_{ia}}\\
+CT_q	&\approx \left( \frac{c_{ia}^2 + c_p^2}{2} \right)  \left( \frac{U}{1-U} \right)  \mu_p 	\quad \text{(Kingman)}\\
+WIBT	&= \frac{b-1}{2} \mu_p \text{ (lot splitting),} ~~ (b-1) \mu_p \text{ (no splitting)} \qquad \qquad \qquad \qquad \qquad \quad \qquad \qquad \qquad\\
+CT		&= CT_q + s + WIBT + \mu_p\\
+		&\text{Continue as with Parallel Processing \ldots}
+\end{align*}
+
+
+%%%%%
+\newpage
+
+\noindent  For \textbf{serially-arranged} workstations,\\
+\noindent  the departure process from $W_1$ is the arrival process at $W_2$.\\
+$(\mu_d, c_d^2) = f(c_{ia}^2, c_p^2, k, U, TH)$:
+\begin{align*}
+\mu_d 	&= \frac{1}{TH}\\
+c_d^2 	&= 1 + (1-U^2)(c_{ia}^2-1) + \frac{U^2}{\sqrt{k}}(c_p^2-1) \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad \qquad\\
+		&\text{which for $k=1$ reduces to:} \\
+c_d^2 	&= U^2 c_p^2 + (1-U^2)c_{ia}^2
+\end{align*}
+
+\vspace{3mm}
+
+\noindent For a workstation with \textbf{parallel downstream branches},\\
+\noindent If the branch's routing control logic is probabilistic\\
+\noindent (prob $p_1$ of routing to $W_{2a}$, prob $p_2$ of routing to $W_{2b}$, \ldots)\\
+\noindent and if $W_1$'s departure process has $(\mu_d, c_d^2 \approx 1)$\\
+\noindent Then results for ``splitting'' a Poisson process apply.\\
+\noindent - Arrivals at $W_{2a}$ will have $(p_1 \mu_d, c_d^2 \approx 1)$\\
+\noindent - Arrivals at $W_{2b}$ will have $(p_2 \mu_d, c_d^2 \approx 1)$, etc.
+
+\end{document}
